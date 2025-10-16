@@ -1,0 +1,8 @@
+requests
+openai
+streamlit
+flask
+guardrails-ai
+sqlalchemy
+pandas
+python-dotenv

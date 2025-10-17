@@ -1,8 +1,31 @@
 import streamlit as st
 import time
 import random
-
+import requests
+API_URL = "http://127.0.0.1:5000/ai"
 st.set_page_config(page_title="Richard Chat", page_icon="💬", layout="wide")
+
+
+if "messages" not in st.session_state:
+    try:
+        res = requests.get(f"{API_URL}/fetch_chat")
+        if res.status_code == 200:
+            data = res.json()
+            st.session_state.messages = data.get("messages", [])
+            if not st.session_state.messages:
+                st.session_state.messages = [
+                    {"role": "assistant", "content": "Hi, I’m Richard 👋 — how can I help you today?"}
+                ]
+        else:
+            st.session_state.messages = [
+                {"role": "assistant", "content": "Hi, I’m Richard 👋 — how can I help you today?"}
+            ]
+    except Exception as e:
+        st.session_state.messages = [
+            {"role": "assistant", "content": "Hi, I’m Richard 👋 — how can I help you today?"}
+        ]
+        st.error(f"Could not fetch chat history: {e}")
+
 
 # --- CUSTOM CSS ---
 st.markdown("""
@@ -25,7 +48,7 @@ st.markdown("""
 
         .chat-row {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 0.5rem;
         }
 
@@ -124,7 +147,7 @@ with chat_container:
 
 # --- INPUT ---
 if prompt := st.chat_input("Write a message..."):
-    # USER message
+    # --- User message ---
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.markdown(f"""
         <div class='chat-row user-row'>
@@ -133,13 +156,21 @@ if prompt := st.chat_input("Write a message..."):
         </div>
     """, unsafe_allow_html=True)
 
-    # Simulated assistant typing animation (bez st.chat_message)
+    # --- Send to backend ---
+    try:
+        res = requests.post(f"{API_URL}/ask", json={"message": prompt})
+        if res.status_code == 200:
+            data = res.json()
+            reply = data.get("reply", "⚠️ No response from bot.")
+        else:
+            reply = f"⚠️ Server error: {res.status_code}"
+    except Exception as e:
+        reply = f"⚠️ Connection error: {e}"
+
+    # --- Assistant reply ---
     placeholder = st.empty()
-    response = random.choice([
-        "Got it! 😊", "Tell me more!", "Okay, I understand.", "Haha, nice one 😄"
-    ])
     full = ""
-    for word in response.split():
+    for word in reply.split():
         full += word + " "
         placeholder.markdown(
             f"""
@@ -149,7 +180,8 @@ if prompt := st.chat_input("Write a message..."):
             </div>
             """,
             unsafe_allow_html=True)
-        time.sleep(0.06)
+        time.sleep(0.05)
+
     placeholder.markdown(
         f"""
         <div class='chat-row assistant-row'>
@@ -159,5 +191,6 @@ if prompt := st.chat_input("Write a message..."):
         """,
         unsafe_allow_html=True)
 
-    # Save to history
-    st.session_state.messages.append({"role": "assistant", "content": response})
+    # --- Save reply locally ---
+    st.session_state.messages.append({"role": "assistant", "content": reply})
+

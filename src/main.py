@@ -1,9 +1,13 @@
 from flask import Flask
+from flask_cors import CORS
 from src.db import init_db
 from src.router.chat_router import chat_bp
-app = Flask(__name__)
-init_db()
+from src.util.clear_chat_db import init_scheduler
 
+app = Flask(__name__)
+CORS(app)
+init_db()
+init_scheduler(app)
 
 @app.route('/')
 def home():

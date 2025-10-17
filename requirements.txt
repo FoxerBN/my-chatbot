@@ -2,7 +2,9 @@ requests
 openai
 streamlit
 flask
+flask_cors
 guardrails-ai
 sqlalchemy
 pandas
 python-dotenv
+Flask-APScheduler

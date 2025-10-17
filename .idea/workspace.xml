@@ -5,33 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="adaef05b-8dc3-40b9-b974-d852814694f7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/chatbot.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.agent.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.ask2agent.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copilot.data.migration.edit.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/db.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/model/chat_model.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/router/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/router/chat_router.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/guardrails_ai.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/service/openai_chatbot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/util/helpers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/service/get_chat.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/service/save_chat.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/util/clear_chat_db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/public/client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/router/chat_router.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/router/chat_router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/service/openai_chatbot.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/service/openai_chatbot.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +30,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;FoxerBN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:FoxerBN/my-chatbot.git&quot;,
+    &quot;accountId&quot;: &quot;cec14845-9c93-4a92-b8cd-c4da07d3ae87&quot;
+  }
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
 }</component>

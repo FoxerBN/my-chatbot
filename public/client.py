@@ -147,21 +147,26 @@ st.markdown("""
                 width: 100%;
                 height: 100vh;
                 border-radius: 0;
-                padding-bottom: 100px;
+                padding-bottom: 140px;
             }
 
             .stChatInput {
-                bottom: 10px !important;
+                bottom: 70px !important;
                 left: 5% !important;
                 width: 90% !important;
                 position: fixed !important;
                 z-index: 9999 !important;
+                margin-bottom: 20px !important;
             }
 
             [data-testid="stHeader"] {
                 display: none !important;
                 height: 0 !important;
             }
+
+            /* Try to hide bottom streamlit elements */
+            .stApp > footer {display: none !important;}
+            .stApp::after {display: none !important;}
         }
     </style>
 """, unsafe_allow_html=True)

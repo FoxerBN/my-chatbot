@@ -97,7 +97,7 @@ st.markdown("""
             color: inherit;
             border-top-left-radius: 0.3rem;
             box-shadow: 0px 1px 4px rgba(0,0,0,0.1);
-            margin-bottom: 5rem;
+            margin-bottom: 1rem;
         }
 
         .user-bubble {

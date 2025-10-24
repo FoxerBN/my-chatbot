@@ -12,7 +12,7 @@ def ask_gpt(prompt: str, context_messages: list = None):
     messages.append({"role": "user", "content": prompt})
 
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-5-mini",
         messages=messages,
         max_tokens=200,
         temperature=0.4,

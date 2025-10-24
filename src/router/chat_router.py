@@ -21,9 +21,6 @@ def ask_route():
         # 1️⃣ Načítaj posledných 10 správ ako kontext
         chat_history = get_chat_by_ip(db, ip_address)
 
-        # chat_history by malo vyzerať napr. ako zoznam dictov:
-        # [{"role": "user", "content": "hi"}, {"role": "assistant", "content": "hello"}]
-        # ak nie, tu to transformuj
         if chat_history and isinstance(chat_history, list):
             context_messages = chat_history[-10:]  # posledných 10
         else:

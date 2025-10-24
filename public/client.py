@@ -97,6 +97,7 @@ st.markdown("""
             color: inherit;
             border-top-left-radius: 0.3rem;
             box-shadow: 0px 1px 4px rgba(0,0,0,0.1);
+            margin-bottom: 12px;
         }
 
         .user-bubble {
@@ -127,92 +128,49 @@ st.markdown("""
             50% {opacity: 0;}
             100% {opacity: 1;}
         }
-
-        /* Chat input positioning */
-        .stChatInput {
-            position: fixed !important;
-            bottom: 20px !important;
-            width: 90% !important;
-            z-index: 999 !important;
-        }
-
-        /* Custom input styling - icon on left */
-        .stChatInput > div {
-            display: flex !important;
-            flex-direction: row !important;
-            align-items: center !important;
-            background-color: rgba(255, 255, 255, 0.05) !important;
-            border-radius: 25px !important;
-            padding: 8px 12px !important;
-            border: 1px solid rgba(100, 100, 100, 0.3) !important;
+        
+        /* Chat input customization */
+        .stChatInput > div{
+            z-index: 9999 !important;
+            margin-bottom: 2em !important;
         }
 
         .stChatInput button {
-            order: 1 !important;
-            margin-left: 8px !important;
-            margin-right: 8px !important;
-            background: none !important;
-            border: none !important;
-            color: #6495ED !important;
-            font-size: 24px !important;
-            cursor: pointer !important;
-            padding: 0 !important;
+            order: 0 !important;
+            margin-right: 0.5rem !important;
         }
 
         .stChatInput input {
-            order: 2 !important;
             flex: 1 !important;
-            background: transparent !important;
-            border: none !important;
-            outline: none !important;
-            color: inherit !important;
-            font-size: 14px !important;
+            order: 1 !important;
         }
 
         /* Mobile responsive */
         @media (max-width: 768px) {
             .main {
                 position: fixed;
-                bottom: 80px !important;
+                bottom: 0;
                 right: 0;
                 left: 0;
                 top: 0;
                 width: 100%;
-                height: calc(100vh - 80px) !important;
+                height: 100vh;
                 border-radius: 0;
-                padding-bottom: 80px;
+                padding-bottom: 100px;
             }
 
             .stChatInput {
-                bottom: 20px !important;
+                bottom: 10px !important;
                 left: 5% !important;
                 width: 90% !important;
                 position: fixed !important;
                 z-index: 9999 !important;
             }
 
-            .stChatInput > div {
-                padding: 10px 15px !important;
-            }
-
-            .stChatInput button {
-                font-size: 28px !important;
-                margin-left: 10px !important;
-                margin-right: 10px !important;
-            }
-
-            .stChatInput input {
-                font-size: 16px !important;
-            }
-
             [data-testid="stHeader"] {
                 display: none !important;
                 height: 0 !important;
             }
-
-            /* Try to hide bottom streamlit elements */
-            .stApp > footer {display: none !important;}
-            .stApp::after {display: none !important;}
         }
     </style>
 """, unsafe_allow_html=True)

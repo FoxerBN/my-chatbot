@@ -97,7 +97,7 @@ st.markdown("""
             color: inherit;
             border-top-left-radius: 0.3rem;
             box-shadow: 0px 1px 4px rgba(0,0,0,0.1);
-            margin-bottom: 12px;
+            margin-bottom: 0.75rem;
         }
 
         .user-bubble {
@@ -128,15 +128,13 @@ st.markdown("""
             50% {opacity: 0;}
             100% {opacity: 1;}
         }
-        
-        .stChatInput button {
-            order: 0 !important;
-            margin-right: 0.5rem !important;
-        }
 
-        .stChatInput input {
-            flex: 1 !important;
-            order: 1 !important;
+        /* Chat input positioning */
+        .stChatInput {
+            position: fixed !important;
+            bottom: 20px !important;
+            width: 90% !important;
+            z-index: 999 !important;
         }
 
         /* Mobile responsive */
@@ -155,6 +153,7 @@ st.markdown("""
 
             .stChatInput {
                 bottom: 10px !important;
+                margin-bottom: 2em !important;
                 left: 5% !important;
                 width: 90% !important;
                 position: fixed !important;

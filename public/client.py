@@ -148,7 +148,7 @@ st.markdown("""
         /* Chat input positioning */
         .stChatInput {
             position: fixed !important;
-            bottom: 60px !important;
+            bottom: 40px !important;
             width: 90% !important;
             z-index: 999 !important;
         }

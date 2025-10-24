@@ -18,6 +18,21 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+# --- Allow embedding (so iframe works inside your portfolio) ---
+st.markdown(
+    """
+    <style>
+    header, footer {visibility: hidden !important;}
+    [data-testid="stToolbar"] {display: none !important;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+st.markdown(
+    "<meta http-equiv='Content-Security-Policy' content='frame-ancestors *;'>",
+    unsafe_allow_html=True
+)
+
 
 
 if "messages" not in st.session_state:

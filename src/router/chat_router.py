@@ -5,6 +5,7 @@ from src.db import SessionLocal
 from src.service.openai_chatbot import ask_gpt
 from src.service.save_chat import save_chat_message
 from src.service.get_chat import get_chat_by_ip
+from src.service.guardrails_ai import validate_simple
 chat_bp = Blueprint("chat", __name__, url_prefix="/ai")
 
 @chat_bp.route("/ask", methods=["POST"])
@@ -15,6 +16,11 @@ def ask_route():
 
     if not user_msg:
         return jsonify({"error": "Missing 'message' field"}), 400
+
+    # Validate message with Guardrails AI
+    validation_result = validate_simple(user_msg)
+    if not validation_result["valid"]:
+        return jsonify({"error": validation_result.get("error", "Invalid message")}), 400
 
     db: Session = SessionLocal()
     try:

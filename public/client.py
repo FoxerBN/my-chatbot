@@ -140,23 +140,22 @@ st.markdown("""
         @media (max-width: 768px) {
             .main {
                 position: fixed;
-                bottom: 0;
+                bottom: 80px !important;
                 right: 0;
                 left: 0;
                 top: 0;
                 width: 100%;
-                height: 100vh;
+                height: calc(100vh - 80px) !important;
                 border-radius: 0;
-                padding-bottom: 140px;
+                padding-bottom: 80px;
             }
 
             .stChatInput {
-                bottom: 70px !important;
+                bottom: 20px !important;
                 left: 5% !important;
                 width: 90% !important;
                 position: fixed !important;
                 z-index: 9999 !important;
-                margin-bottom: 20px !important;
             }
 
             [data-testid="stHeader"] {

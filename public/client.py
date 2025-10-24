@@ -58,7 +58,7 @@ st.markdown("""
             bottom: 20px;
             right: 20px;
             width: 350px;
-            height: 500px;
+            height: 100dvh;
             background-color: var(--background-color);
             border: 1px solid rgba(100, 100, 100, 0.2);
             border-radius: 1rem;

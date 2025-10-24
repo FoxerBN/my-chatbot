@@ -33,3 +33,4 @@ htmlcov/
 # OS-specific files
 .DS_Store
 Thumbs.db
+public/.streamlit/secrets.toml

@@ -12,7 +12,12 @@ try:
 except:
     API_URL = os.getenv("API_URL", "http://127.0.0.1:5000/ai")
 
-st.set_page_config(page_title="Richard Chat", page_icon="💬", layout="wide")
+st.set_page_config(
+    page_title="Richard Chat",
+    page_icon="💬",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 
 if "messages" not in st.session_state:
@@ -36,11 +41,18 @@ if "messages" not in st.session_state:
         st.error(f"Could not fetch chat history: {e}")
 
 
-# --- CUSTOM CSS ---
+# --- VIEWPORT & CUSTOM CSS ---
 st.markdown("""
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <style>
-        #MainMenu, footer, header {visibility: hidden;}
+        /* Hide Streamlit branding */
+        #MainMenu, footer, header {visibility: hidden !important; display: none !important;}
+        .stDeployButton {display: none !important;}
+        [data-testid="stHeader"] {display: none !important;}
+        [data-testid="stToolbar"] {display: none !important;}
+        iframe {display: none !important;}
 
+        /* Main container */
         .main {
             position: fixed;
             bottom: 20px;
@@ -52,6 +64,7 @@ st.markdown("""
             border-radius: 1rem;
             box-shadow: 0 0 15px rgba(0,0,0,0.15);
             padding: 1rem;
+            padding-bottom: 80px;
             overflow-y: auto;
         }
 
@@ -115,10 +128,40 @@ st.markdown("""
             100% {opacity: 1;}
         }
 
+        /* Chat input positioning */
         .stChatInput {
-            position: fixed;
-            bottom: 20px;
-            width: 90%;
+            position: fixed !important;
+            bottom: 20px !important;
+            width: 90% !important;
+            z-index: 999 !important;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .main {
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100vh;
+                border-radius: 0;
+                padding-bottom: 100px;
+            }
+
+            .stChatInput {
+                bottom: 10px !important;
+                left: 5% !important;
+                width: 90% !important;
+                position: fixed !important;
+                z-index: 9999 !important;
+            }
+
+            [data-testid="stHeader"] {
+                display: none !important;
+                height: 0 !important;
+            }
         }
     </style>
 """, unsafe_allow_html=True)

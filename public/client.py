@@ -136,6 +136,39 @@ st.markdown("""
             z-index: 999 !important;
         }
 
+        /* Custom input styling - icon on left */
+        .stChatInput > div {
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            background-color: rgba(255, 255, 255, 0.05) !important;
+            border-radius: 25px !important;
+            padding: 8px 12px !important;
+            border: 1px solid rgba(100, 100, 100, 0.3) !important;
+        }
+
+        .stChatInput button {
+            order: 1 !important;
+            margin-left: 8px !important;
+            margin-right: 8px !important;
+            background: none !important;
+            border: none !important;
+            color: #6495ED !important;
+            font-size: 24px !important;
+            cursor: pointer !important;
+            padding: 0 !important;
+        }
+
+        .stChatInput input {
+            order: 2 !important;
+            flex: 1 !important;
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            color: inherit !important;
+            font-size: 14px !important;
+        }
+
         /* Mobile responsive */
         @media (max-width: 768px) {
             .main {
@@ -156,6 +189,20 @@ st.markdown("""
                 width: 90% !important;
                 position: fixed !important;
                 z-index: 9999 !important;
+            }
+
+            .stChatInput > div {
+                padding: 10px 15px !important;
+            }
+
+            .stChatInput button {
+                font-size: 28px !important;
+                margin-left: 10px !important;
+                margin-right: 10px !important;
+            }
+
+            .stChatInput input {
+                font-size: 16px !important;
             }
 
             [data-testid="stHeader"] {

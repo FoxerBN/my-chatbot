@@ -4,11 +4,15 @@ from flask_cors import CORS
 from src.db import init_db
 from src.router.chat_router import chat_bp
 from src.util.clear_chat_db import init_scheduler
+from src.middlewares import limiter
 
 app = Flask(__name__)
 
 # Allow CORS from any origin (you can restrict this to your Streamlit app URL later)
 CORS(app, resources={r"/*": {"origins": "*"}})
+
+# Initialize rate limiter
+limiter.init_app(app)
 
 init_db()
 init_scheduler(app)

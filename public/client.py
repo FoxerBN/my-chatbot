@@ -41,15 +41,15 @@ if "messages" not in st.session_state:
             st.session_state.messages = data.get("messages", [])
             if not st.session_state.messages:
                 st.session_state.messages = [
-                    {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem den pomôcť ?"}
+                    {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem dnes pomôcť ?"}
                 ]
         else:
             st.session_state.messages = [
-                {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem den pomôcť ?"}
+                {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem dnes pomôcť ?"}
             ]
     except Exception as e:
         st.session_state.messages = [
-            {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem den pomôcť ?"}
+            {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem dnes pomôcť ?"}
         ]
         st.error(f"Could not fetch chat history: {e}")
 

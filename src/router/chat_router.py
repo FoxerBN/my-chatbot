@@ -6,9 +6,12 @@ from src.service.openai_chatbot import ask_gpt
 from src.service.save_chat import save_chat_message
 from src.service.get_chat import get_chat_by_ip
 from src.service.guardrails_ai import validate_simple
+from src.middlewares import limiter
+
 chat_bp = Blueprint("chat", __name__, url_prefix="/ai")
 
 @chat_bp.route("/ask", methods=["POST"])
+@limiter.limit("15 per hour")
 def ask_route():
     data = request.get_json()
     user_msg = data.get("message", "")

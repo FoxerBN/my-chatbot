@@ -1,11 +1,19 @@
 import streamlit as st
 import time
-import random
 import requests
 import markdown
 import html
 import os
 
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    [data-testid="stAppViewBlockContainer"] + div {visibility: hidden;}
+    .viewerBadge_container__1QSob {display: none;}
+    </style>
+"""
 # Use Streamlit secrets or environment variable for API URL (fallback to localhost)
 try:
     API_URL = st.secrets.get("API_URL", os.getenv("API_URL", "http://127.0.0.1:5000/ai"))
@@ -18,22 +26,12 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-# --- Allow embedding (so iframe works inside your portfolio) ---
-st.markdown(
-    """
-    <style>
-    header, footer {visibility: hidden !important;}
-    [data-testid="stToolbar"] {display: none !important;}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 st.markdown(
     "<meta http-equiv='Content-Security-Policy' content='frame-ancestors *;'>",
     unsafe_allow_html=True
 )
 
-
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 if "messages" not in st.session_state:
     try:

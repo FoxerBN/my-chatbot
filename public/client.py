@@ -201,14 +201,26 @@ st.markdown("""
 
 st.markdown("""
     <style>
-        /* Fix pre bielu čiaru na mobiloch */
-        html, body, [data-testid="stAppViewContainer"], [data-testid="stVerticalBlock"] {
-            background-color: #0E1117 !important; /* alebo tvoja farba pozadia */
+        /* Dynamický viewport */
+        .main {
+            height: 100dvh !important; /* namiesto 100vh */
+        }
+
+        html, body, [data-testid="stAppViewContainer"], [data-testid="stVerticalBlock"], .block-container {
+            background-color: #0E1117 !important; /* farba pozadia */
             margin: 0 !important;
             padding: 0 !important;
             height: 100%;
-            overflow-x: hidden;
+            overflow-x: hidden !important;
         }
+
+        /* Bez spodného paddingu */
+        .block-container {
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
+        }
+
+      
 
         /* Safe area pre Android/iPhone */
         @supports (padding: env(safe-area-inset-bottom)) {
@@ -217,19 +229,12 @@ st.markdown("""
                 background-color: #0E1117 !important;
             }
         }
-
-        /* Odstránenie defaultného streamlit spodného paddingu */
-        .block-container {
-            padding-bottom: 0rem !important;
-            margin-bottom: 0rem !important;
-        }
-
-        /* Ak máš fixnutý chat input, nech sedí s bottom safe area */
-        .stChatInput {
-            bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
-        }
     </style>
+
+    <!-- Nastavenie farby Android navigačnej lišty -->
+    <meta name="theme-color" content="#0E1117">
 """, unsafe_allow_html=True)
+
 
 
 # --- SESSION STATE ---

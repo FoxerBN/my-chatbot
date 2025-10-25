@@ -1,11 +1,19 @@
 import streamlit as st
 import time
-import random
 import requests
 import markdown
 import html
 import os
 
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    [data-testid="stAppViewBlockContainer"] + div {visibility: hidden;}
+    .viewerBadge_container__1QSob {display: none;}
+    </style>
+"""
 # Use Streamlit secrets or environment variable for API URL (fallback to localhost)
 try:
     API_URL = st.secrets.get("API_URL", os.getenv("API_URL", "http://127.0.0.1:5000/ai"))
@@ -18,22 +26,12 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed"
 )
-# --- Allow embedding (so iframe works inside your portfolio) ---
-st.markdown(
-    """
-    <style>
-    header, footer {visibility: hidden !important;}
-    [data-testid="stToolbar"] {display: none !important;}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 st.markdown(
     "<meta http-equiv='Content-Security-Policy' content='frame-ancestors *;'>",
     unsafe_allow_html=True
 )
 
-
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 if "messages" not in st.session_state:
     try:
@@ -200,6 +198,39 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+        /* Fix pre bielu čiaru na mobiloch */
+        html, body, [data-testid="stAppViewContainer"], [data-testid="stVerticalBlock"] {
+            background-color: #0E1117 !important; /* alebo tvoja farba pozadia */
+            margin: 0 !important;
+            padding: 0 !important;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        /* Safe area pre Android/iPhone */
+        @supports (padding: env(safe-area-inset-bottom)) {
+            body {
+                padding-bottom: env(safe-area-inset-bottom);
+                background-color: #0E1117 !important;
+            }
+        }
+
+        /* Odstránenie defaultného streamlit spodného paddingu */
+        .block-container {
+            padding-bottom: 0rem !important;
+            margin-bottom: 0rem !important;
+        }
+
+        /* Ak máš fixnutý chat input, nech sedí s bottom safe area */
+        .stChatInput {
+            bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 
 # --- SESSION STATE ---
 if "messages" not in st.session_state:

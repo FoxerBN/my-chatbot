@@ -157,9 +157,13 @@ st.markdown("""
             position: fixed;
             bottom: 10px;
             left: 50%;
+            width: 90%;
             transform: translateX(-50%);
-            width: 95%;
             max-width: 800px;
+        }
+        
+        .stChatInput > div {
+            width: 100%;    
         }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -162,21 +162,41 @@ st.markdown("""
             max-width: 800px;
         }
 
-        /* Remove orange focus border from input */
-        .stChatInput textarea:focus,
-        .stChatInput input:focus,
-        [data-testid="stChatInput"] textarea:focus,
-        [data-testid="stChatInput"] input:focus {
+        /* Style wrapper div instead of textarea */
+        .stChatInput > div:first-child,
+        [data-testid="stChatInput"] > div:first-child {
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 1.5rem !important;
+            
             outline: none !important;
-            border-color: rgba(100, 149, 237, 0.6) !important;
+        }
+
+        /* Wrapper focus state */
+        .stChatInput:focus-within > div:first-child,
+        [data-testid="stChatInput"]:focus-within > div:first-child {
+            border: 1px solid rgba(100, 149, 237, 0.6) !important;
             box-shadow: 0 0 0 1px rgba(100, 149, 237, 0.3) !important;
         }
 
+        /* Remove all borders from textarea, set consistent background */
         .stChatInput textarea,
         .stChatInput input,
         [data-testid="stChatInput"] textarea,
         [data-testid="stChatInput"] input {
+            border: none !important;
             outline: none !important;
+            box-shadow: none !important;
+            
+            border-radius: 1.5rem !important;
+        }
+
+        .stChatInput textarea:focus,
+        .stChatInput input:focus,
+        [data-testid="stChatInput"] textarea:focus,
+        [data-testid="stChatInput"] input:focus {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
         }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

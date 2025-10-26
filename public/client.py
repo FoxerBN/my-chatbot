@@ -161,6 +161,23 @@ st.markdown("""
             width: 95%;
             max-width: 800px;
         }
+
+        /* Remove orange focus border from input */
+        .stChatInput textarea:focus,
+        .stChatInput input:focus,
+        [data-testid="stChatInput"] textarea:focus,
+        [data-testid="stChatInput"] input:focus {
+            outline: none !important;
+            border-color: rgba(100, 149, 237, 0.6) !important;
+            box-shadow: 0 0 0 1px rgba(100, 149, 237, 0.3) !important;
+        }
+
+        .stChatInput textarea,
+        .stChatInput input,
+        [data-testid="stChatInput"] textarea,
+        [data-testid="stChatInput"] input {
+            outline: none !important;
+        }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0E1117">

@@ -194,18 +194,23 @@ USER_ICON = "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
 if "messages" not in st.session_state:
     try:
         res = requests.get(f"{API_URL}/fetch_chat", timeout=5)
+        print(f"[DEBUG] Fetch chat status: {res.status_code}")
         if res.status_code == 200:
             data = res.json()
-            st.session_state.messages = data.get("messages", [])
+            fetched_messages = data.get("messages", [])
+            print(f"[DEBUG] Fetched {len(fetched_messages)} messages from DB")
+            st.session_state.messages = fetched_messages
             if not st.session_state.messages:
                 st.session_state.messages = [
                     {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem dnes pomôcť ?"}
                 ]
         else:
+            print(f"[DEBUG] Fetch failed with status {res.status_code}")
             st.session_state.messages = [
                 {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem dnes pomôcť ?"}
             ]
     except Exception as e:
+        print(f"[DEBUG] Exception fetching chat: {e}")
         st.session_state.messages = [
             {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem dnes pomôcť ?"}
         ]
@@ -259,16 +264,21 @@ if prompt := st.chat_input("Write a message..."):
 # Process waiting response
 if st.session_state.waiting_for_response:
     last_user_message = [msg for msg in st.session_state.messages if msg["role"] == "user"][-1]["content"]
+    print(f"[DEBUG] Sending message to /ask: {last_user_message}")
 
     try:
         res = requests.post(f"{API_URL}/ask", json={"message": last_user_message}, timeout=30)
+        print(f"[DEBUG] /ask response status: {res.status_code}")
         if res.status_code == 200:
             data = res.json()
             reply = data.get("reply", "⚠️ No response from bot.")
+            print(f"[DEBUG] Got reply from bot, saving to session state")
         else:
             reply = f"⚠️ Server error: {res.status_code}"
+            print(f"[DEBUG] Server error: {res.status_code}")
     except Exception as e:
         reply = f"⚠️ Connection error: {e}"
+        print(f"[DEBUG] Connection error: {e}")
 
     # Clear waiting state
     st.session_state.waiting_for_response = False

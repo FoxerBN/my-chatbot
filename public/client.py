@@ -152,7 +152,7 @@ st.markdown("""
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Chat input - responsive width */
+        /* Chat input - only position and width */
         .stChatInput {
             position: fixed;
             bottom: 10px;
@@ -160,43 +160,6 @@ st.markdown("""
             transform: translateX(-50%);
             width: 95%;
             max-width: 800px;
-        }
-
-        /* Style wrapper div instead of textarea */
-        .stChatInput > div:first-child,
-        [data-testid="stChatInput"] > div:first-child {
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            border-radius: 1.5rem !important;
-            
-            outline: none !important;
-        }
-
-        /* Wrapper focus state */
-        .stChatInput:focus-within > div:first-child,
-        [data-testid="stChatInput"]:focus-within > div:first-child {
-            border: 1px solid rgba(100, 149, 237, 0.6) !important;
-            box-shadow: 0 0 0 1px rgba(100, 149, 237, 0.3) !important;
-        }
-
-        /* Remove all borders from textarea, set consistent background */
-        .stChatInput textarea,
-        .stChatInput input,
-        [data-testid="stChatInput"] textarea,
-        [data-testid="stChatInput"] input {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
-            
-            border-radius: 1.5rem !important;
-        }
-
-        .stChatInput textarea:focus,
-        .stChatInput input:focus,
-        [data-testid="stChatInput"] textarea:focus,
-        [data-testid="stChatInput"] input:focus {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
         }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -208,10 +171,7 @@ st.markdown("""
                 window.scrollTo(0, document.body.scrollHeight);
             }, 100);
         }
-
-        // Scroll on page load and mutations
         window.addEventListener('load', scrollToBottom);
-
         const observer = new MutationObserver(scrollToBottom);
         setTimeout(() => {
             const target = document.querySelector('.main');

@@ -5,37 +5,193 @@ import markdown
 import html
 import os
 
-hide_streamlit_style = """
-    <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    [data-testid="stAppViewBlockContainer"] + div {visibility: hidden;}
-    .viewerBadge_container__1QSob {display: none;}
-    </style>
-"""
-# Use Streamlit secrets or environment variable for API URL (fallback to localhost)
+# Use Streamlit secrets or environment variable for API URL
 try:
     API_URL = st.secrets.get("API_URL", os.getenv("API_URL", "http://127.0.0.1:5000/ai"))
 except:
     API_URL = os.getenv("API_URL", "http://127.0.0.1:5000/ai")
 
+# Page config
 st.set_page_config(
     page_title="Richard Chat",
     page_icon="💬",
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="collapsed"
 )
+
+# Allow iframe embedding
 st.markdown(
     "<meta http-equiv='Content-Security-Policy' content='frame-ancestors *;'>",
     unsafe_allow_html=True
 )
 
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+# Custom CSS
+st.markdown("""
+    <style>
+        /* Hide Streamlit branding */
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+        header {visibility: hidden;}
+        [data-testid="stHeader"] {display: none;}
+        [data-testid="stToolbar"] {display: none;}
+        .stDeployButton {display: none;}
 
+        /* Reset margins and padding for iframe */
+        html, body {
+            margin: 0;
+            padding: 0;
+            background-color: #0E1117;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        [data-testid="stAppViewContainer"] {
+            background-color: #0E1117;
+            padding: 0;
+            margin: 0;
+        }
+
+        .block-container {
+            padding: 1rem 1rem 0rem 1rem;
+            max-width: 100%;
+        }
+
+        .main {
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            overflow-y: auto;
+            padding-bottom: 100px;
+            scroll-behavior: smooth;
+        }
+
+        /* Chat bubbles */
+        .chat-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(10px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        .assistant-row {
+            flex-direction: row;
+        }
+
+        .user-row {
+            flex-direction: row-reverse;
+        }
+
+        .chat-bubble {
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            max-width: 80%;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            word-wrap: break-word;
+        }
+
+        .assistant-bubble {
+            background-color: rgba(100, 149, 237, 0.15);
+            border: 1px solid rgba(100, 149, 237, 0.3);
+            color: inherit;
+            border-top-left-radius: 0.3rem;
+            box-shadow: 0px 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .user-bubble {
+            background-color: rgba(0, 128, 0, 0.15);
+            border: 1px solid rgba(0, 128, 0, 0.3);
+            color: inherit;
+            border-top-right-radius: 0.3rem;
+            margin-left: auto;
+            text-align: right;
+            box-shadow: 0px 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin: 0 0.6rem;
+            object-fit: cover;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0% {opacity: 1;}
+            50% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Native Streamlit input - minimal override */
+        .stChatInput {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 0.75rem;
+            background-color: #0E1117;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0E1117">
+    <script>
+        // Auto-scroll to bottom
+        function scrollToBottom() {
+            setTimeout(() => {
+                window.scrollTo(0, document.body.scrollHeight);
+            }, 100);
+        }
+
+        // Scroll on page load and mutations
+        window.addEventListener('load', scrollToBottom);
+
+        const observer = new MutationObserver(scrollToBottom);
+        setTimeout(() => {
+            const target = document.querySelector('.main');
+            if (target) {
+                observer.observe(target, { childList: true, subtree: true });
+            }
+        }, 500);
+    </script>
+""", unsafe_allow_html=True)
+
+# Avatar URLs
+RICHARD_ICON = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png"
+USER_ICON = "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
+
+# Initialize chat history
 if "messages" not in st.session_state:
     try:
-        res = requests.get(f"{API_URL}/fetch_chat")
+        res = requests.get(f"{API_URL}/fetch_chat", timeout=5)
         if res.status_code == 200:
             data = res.json()
             st.session_state.messages = data.get("messages", [])
@@ -51,206 +207,11 @@ if "messages" not in st.session_state:
         st.session_state.messages = [
             {"role": "assistant", "content": "Ahoj, ja som Richard 👋 — ako ti môžem dnes pomôcť ?"}
         ]
-        st.error(f"Could not fetch chat history: {e}")
-
-
-# --- VIEWPORT & CUSTOM CSS ---
-st.markdown("""
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <style>
-        /* Hide Streamlit branding */
-        #MainMenu, footer, header {visibility: hidden !important; display: none !important;}
-        .stDeployButton {display: none !important;}
-        [data-testid="stHeader"] {display: none !important;}
-        [data-testid="stToolbar"] {display: none !important;}
-        iframe {display: none !important;}
-
-        /* Main container */
-        .main {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 350px;
-            height: 100dvh;
-            background-color: var(--background-color);
-            border: 1px solid rgba(100, 100, 100, 0.2);
-            border-radius: 1rem;
-            box-shadow: 0 0 15px rgba(0,0,0,0.15);
-            padding: 1rem;
-            padding-bottom: 80px;
-            overflow-y: auto;
-        }
-
-        .chat-row {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .assistant-row {
-            flex-direction: row;
-        }
-
-        .user-row {
-            flex-direction: row-reverse;
-        }
-
-        .chat-bubble {
-            padding: 0.6rem 0.9rem;
-            border-radius: 1.2rem;
-            max-width: 75%;
-            line-height: 1.4;
-            font-size: 0.9rem;
-            word-wrap: break-word;
-        }
-
-        .assistant-bubble {
-            background-color: rgba(100, 149, 237, 0.15);
-            border: 1px solid rgba(100, 149, 237, 0.3);
-            color: inherit;
-            border-top-left-radius: 0.3rem;
-            box-shadow: 0px 1px 4px rgba(0,0,0,0.1);
-            margin-bottom: 1.5rem;
-        }
-
-        .user-bubble {
-            background-color: rgba(0, 128, 0, 0.15);
-            border: 1px solid rgba(0, 128, 0, 0.3);
-            color: inherit;
-            border-top-right-radius: 0.3rem;
-            margin-left: auto;
-            text-align: right;
-            box-shadow: 0px 1px 4px rgba(0,0,0,0.1);
-            margin-bottom: 1.5rem;
-        }
-
-        .avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            margin: 0 0.5rem;
-            object-fit: cover;
-            box-shadow: 0 0 3px rgba(0,0,0,0.2);
-        }
-
-        .cursor {
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0% {opacity: 1;}
-            50% {opacity: 0;}
-            100% {opacity: 1;}
-        }
-
-        /* Chat input positioning */
-        .stChatInput {
-            position: fixed !important;
-            bottom: 40px !important;
-            width: 90% !important;
-            z-index: 999 !important;
-        }
-
-        .stChatInput > div {
-            width: 100% !important;
-        }
-
-        .stChatInput textarea,
-        .stChatInput input {
-            width: 100% !important;
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .main {
-                position: fixed;
-                bottom: 0;
-                right: 0;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100vh;
-                border-radius: 0;
-                padding-bottom: 100px;
-            }
-
-            .stChatInput {
-                bottom: 60px !important;
-                left: 5% !important;
-                width: 90% !important;
-                position: fixed !important;
-                z-index: 9999 !important;
-            }
-
-            .stChatInput > div {
-                width: 100% !important;
-            }
-
-            .stChatInput textarea,
-            .stChatInput input {
-                width: 100% !important;
-            }
-
-            [data-testid="stHeader"] {
-                display: none !important;
-                height: 0 !important;
-            }
-        }
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-    <style>
-        /* Dynamický viewport */
-        .main {
-            height: 100dvh !important; /* namiesto 100vh */
-        }
-
-        html, body, [data-testid="stAppViewContainer"], [data-testid="stVerticalBlock"], .block-container {
-            background-color: #0E1117 !important; /* farba pozadia */
-            margin: 0 !important;
-            padding: 0 !important;
-            height: 100%;
-            overflow-x: hidden !important;
-        }
-
-        /* Bez spodného paddingu */
-        .block-container {
-            padding-bottom: 0 !important;
-            margin-bottom: 0 !important;
-        }
-
-      
-
-        /* Safe area pre Android/iPhone */
-        @supports (padding: env(safe-area-inset-bottom)) {
-            body {
-                padding-bottom: env(safe-area-inset-bottom);
-                background-color: #0E1117 !important;
-            }
-        }
-    </style>
-
-    <!-- Nastavenie farby Android navigačnej lišty -->
-    <meta name="theme-color" content="#0E1117">
-""", unsafe_allow_html=True)
-
-
-
-# --- SESSION STATE ---
-if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {"role": "assistant", "content": "Hi, I'm Richard 👋 — how can I help you today?"}
-    ]
 
 if "waiting_for_response" not in st.session_state:
     st.session_state.waiting_for_response = False
 
-# --- ICONS ---
-RICHARD_ICON = "https://cdn-icons-png.flaticon.com/512/4712/4712035.png"
-USER_ICON = "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
-
-# --- CHAT UI ---
+# Display chat messages with custom bubbles
 chat_container = st.container()
 with chat_container:
     for msg in st.session_state.messages:
@@ -277,7 +238,7 @@ with chat_container:
                 </div>
                 """, unsafe_allow_html=True)
 
-    # --- Show thinking indicator if waiting ---
+    # Show thinking indicator if waiting
     if st.session_state.waiting_for_response:
         st.markdown(f"""
             <div class='chat-row assistant-row'>
@@ -286,20 +247,19 @@ with chat_container:
             </div>
         """, unsafe_allow_html=True)
 
-# --- INPUT ---
+# Native Streamlit input
 if prompt := st.chat_input("Write a message..."):
-    # --- User message ---
+    # Add user message
     st.session_state.messages.append({"role": "user", "content": prompt})
     st.session_state.waiting_for_response = True
     st.rerun()
 
-# --- Process waiting response ---
+# Process waiting response
 if st.session_state.waiting_for_response:
-    # --- Send to backend ---
     last_user_message = [msg for msg in st.session_state.messages if msg["role"] == "user"][-1]["content"]
 
     try:
-        res = requests.post(f"{API_URL}/ask", json={"message": last_user_message})
+        res = requests.post(f"{API_URL}/ask", json={"message": last_user_message}, timeout=30)
         if res.status_code == 200:
             data = res.json()
             reply = data.get("reply", "⚠️ No response from bot.")
@@ -308,17 +268,17 @@ if st.session_state.waiting_for_response:
     except Exception as e:
         reply = f"⚠️ Connection error: {e}"
 
-    # --- Clear waiting state ---
+    # Clear waiting state
     st.session_state.waiting_for_response = False
 
-    # --- Convert markdown to HTML ---
+    # Convert markdown to HTML
     reply_html = markdown.markdown(
         reply,
         extensions=['extra', 'nl2br'],
         output_format='html'
     ).replace('\n', '<br>')
 
-    # --- Assistant reply with typing animation ---
+    # Typing animation
     placeholder = st.empty()
     full = ""
     for word in reply.split():
@@ -347,7 +307,6 @@ if st.session_state.waiting_for_response:
         """,
         unsafe_allow_html=True)
 
-    # --- Save reply locally ---
+    # Save reply
     st.session_state.messages.append({"role": "assistant", "content": reply})
     st.rerun()
-

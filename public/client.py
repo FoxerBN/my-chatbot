@@ -53,7 +53,9 @@ st.markdown("""
 
         .block-container {
             padding: 1rem 1rem 0rem 1rem;
-            max-width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 95%;
         }
 
         .main {
@@ -150,15 +152,14 @@ st.markdown("""
             background: rgba(255, 255, 255, 0.3);
         }
 
-        /* Native Streamlit input - minimal override */
+        /* Chat input - responsive width */
         .stChatInput {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 0.75rem;
-            background-color: #0E1117;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 800px;
         }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

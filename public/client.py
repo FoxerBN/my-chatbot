@@ -167,18 +167,18 @@ st.markdown("""
         [data-testid="stChatInput"] > div:first-child {
             border: 1px solid rgba(255, 255, 255, 0.2) !important;
             border-radius: 1.5rem !important;
-            
             outline: none !important;
+            box-shadow: none !important;
         }
 
-        /* Wrapper focus state */
+        /* Wrapper focus state - remove orange/blue halo */
         .stChatInput:focus-within > div:first-child,
         [data-testid="stChatInput"]:focus-within > div:first-child {
-            border: 1px solid rgba(100, 149, 237, 0.6) !important;
-            box-shadow: 0 0 0 1px rgba(100, 149, 237, 0.3) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            box-shadow: none !important;
         }
 
-        /* Remove all borders from textarea, set consistent background */
+        /* Remove all borders from textarea / input inside */
         .stChatInput textarea,
         .stChatInput input,
         [data-testid="stChatInput"] textarea,
@@ -186,7 +186,6 @@ st.markdown("""
             border: none !important;
             outline: none !important;
             box-shadow: none !important;
-            
             border-radius: 1.5rem !important;
         }
 
@@ -208,10 +207,7 @@ st.markdown("""
                 window.scrollTo(0, document.body.scrollHeight);
             }, 100);
         }
-
-        // Scroll on page load and mutations
         window.addEventListener('load', scrollToBottom);
-
         const observer = new MutationObserver(scrollToBottom);
         setTimeout(() => {
             const target = document.querySelector('.main');
